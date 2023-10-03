@@ -6,8 +6,8 @@ export default function Home() {
   return (
     <div>
       <Link href="/week2">CPRG 306: Web Development 2 - Assignments</Link>
-
       <EventList/>
+      <Link href="/week3">Week3</Link>
     </div>
   )
 }

@@ -1,12 +1,10 @@
-import Image from 'next/image'
-import Link from 'next/link'
+import EventList from "./studentInfo"
 
-
-export default function Home() {
-    return (
-      <Link href="week2">any </Link>
-    )
-  }
-
-
-
+export default function SecondPage() {
+  return (
+    <div>
+        <h1> My Shopping List</h1>
+      <EventList/>
+    </div>
+  )
+}
