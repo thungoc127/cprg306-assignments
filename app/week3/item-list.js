@@ -74,7 +74,7 @@ export default function ItemList(){
     quantity: 4,
     category: "household",
   };
-
+  
 return (
   <>
     <h1 className="text-sky-500 dark:text-sky-400" title="SHOPPING LIST" ></h1>
