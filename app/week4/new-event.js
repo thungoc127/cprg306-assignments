@@ -1,12 +1,11 @@
 "use client";
 import { useState } from "react";
-import { ToastContainer } from 'react-toastify';
 
 export default function NewEvent() {
   const [name, setName] = useState("");
   const [count, setCount] = useState(0);
   const [eventCreated, setEventCreated] = useState(false);
-  const [open, setOpen] = useState(false);
+  const [category, setCategory] = useState("produce");
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -16,7 +15,7 @@ export default function NewEvent() {
       count,
     };
     console.log(newEvent);
-
+    alert("Name: " + name + "\n" + "Quantity: "+ count+ "\n" + "Category:" +category)
     setEventCreated(true);
 
     setName("");
@@ -24,15 +23,19 @@ export default function NewEvent() {
 
     setEventCreated(false);
   };
+
+  const handleSetCategory=(event)=>{
+    setCategory(event.target.value)
+  }
   
-  const increment = () => {
-    setCount(count + 1);
+  const increment = (event) => {
+    setCount(parseInt(event.target.value,10));
   };
 
-  const decrease=() => {
+  const decrease=(event) => {
     if (count > 0) {
-        setCount(count - 1);
-      }
+      setCount(parseInt(event.target.value));
+    }
 
   };
 
@@ -66,15 +69,15 @@ export default function NewEvent() {
             required
             class="w-20 ml-1 border-2 border-gray-300 p-2 rounded-lg font-sans"
             value= {count}
-            onKeyUp={increment}
-            onKeyDown={decrease}
+            onChange={(event)=> increment(event)}
           />
 
           <select class="ml-1 border-2 border-gray-300 p-2 rounded-lg font-sans">
             <option value="" disabled>
               Category
             </option>
-            <option value="produce" selected>
+            
+            <option value={category} onChange={handleSetCategory}  selected>
               Produce
             </option>
             <option value="dairy">Dairy</option>
@@ -87,6 +90,7 @@ export default function NewEvent() {
             <option value="snacks">Snacks</option>
             <option value="household">Household</option>
             <option value="other">Other</option>
+            
           </select>
         </div>
         <button
