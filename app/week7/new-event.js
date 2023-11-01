@@ -1,43 +1,41 @@
 "use client";
 import { useState } from "react";
+import Item from "./item";
 
-export default function NewEvent() {
+export default function NewItem({ onCreateItem }) {
   const [name, setName] = useState("");
   const [count, setCount] = useState(0);
-  const [eventCreated, setEventCreated] = useState(false);
   const [category, setCategory] = useState("produce");
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    const newEvent = {
-      name,
-      count,
+    const newItem = {
+      "id": "",
+      "name": name,
+      "quantity": count,
+      "category": category
     };
-    console.log(newEvent);
-    alert("Name: " + name + "\n" + "Quantity: "+ count+ "\n" + "Category:" +category)
-    setEventCreated(true);
 
+    onCreateItem(newItem);
+
+
+    alert("Name: " + name + "\n" + "Quantity: "+ count+ "\n" + "Category:" +category)
     setName("");
     setCount(0);
 
-    setEventCreated(false);
+
   };
 
   const handleSetCategory=(event)=>{
     setCategory(event.target.value)
   }
   
-  const increment = (event) => {
-    setCount(parseInt(event.target.value,10));
+  const handleSetQuantity = (event) => {
+    setCount(parseInt(event.target.value));
   };
 
-  const decrease=(event) => {
-    if (count > 0) {
-      setCount(parseInt(event.target.value));
-    }
 
-  };
 
   const handleNameChange = (event) => {
     setName(event.target.value);
@@ -69,15 +67,15 @@ export default function NewEvent() {
             required
             class="w-20 ml-1 border-2 border-gray-300 p-2 rounded-lg font-sans"
             value= {count}
-            onChange={(event)=> increment(event)}
+            onChange={handleSetQuantity}
           />
 
-          <select onChange={handleSetCategory} class="ml-1 border-2 border-gray-300 p-2 rounded-lg font-sans">
+          <select onChange={handleSetCategory}  class="ml-1 border-2 border-gray-300 p-2 rounded-lg font-sans">
             <option value="" disabled>
               Category
             </option>
             
-            <option value={category}   selected>
+            <option value={category}  selected>
               Produce
             </option>
             <option value="dairy">Dairy</option>
