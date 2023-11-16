@@ -1,40 +1,57 @@
 "use client";
-import { useState } from "react";
+
 import React from "react";
-import ItemList from "./item-list";
-import NewItem from "./new-event";
-import itemData from "./item.json";
-import MealIdeas from "./meal-ideas"
-import { Chicle } from "next/font/google";
+import { useUserAuth } from "./_utils/auth-context";
+
+import Link from 'next/link'
 
 export default function Page() {
-  const [itemList, setItemList] = useState(
-    itemData.map((item) => ({ ...item }))
-  );
-  const [ingredient, setIngredient] = useState("");
+  const { user, gitHubSignIn, firebaseSignOut } = useUserAuth();
 
-  const handleCreateItem = (item) => {
-    setItemList([...itemList, item]);
-    console.log("test7",itemList)
-  };
-  const handleSetIngredientName = (ingredient) => {
-    // splice emoji from ingredient name
-    // const name = ingredient.split(/,|🍞|🥚|🍌|🥦|🍗|🍝|🧻|🍽️|🧼/);
-    ingredient= ingredient.replace(/([\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD10-\uDDFF])/g, '');
+  // user is an object with the following properties:
+  // displayName, email, emailVerified, photoURL, uid, phoneNumber, providerData
 
-    setIngredient(ingredient);
-  };
-  console.log("test7",ingredient)
-
-    return (
-      <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <NewItem onCreateItem={handleCreateItem}/>
-      <div class="flex gap-4">
-      <ItemList itemList={itemList} handleSetIngredient={handleSetIngredientName} />   
-      <MealIdeas ingredient={ingredient}/>
-      </div>
-    
-    </main>
-
-    );
+  async function handleSignIn() {
+    try {
+      await gitHubSignIn();
+      console.log(user);
+    } catch (error) {
+      console.log(error);
+    }
   }
+
+  async function handleSignOut() {
+    try {
+      await firebaseSignOut();
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  console.log(user);
+
+  return (
+    <div className="text-lg">
+      {user ? (
+        <div>
+          {user.displayName} | {user.email}
+          <img src={user.photoURL} alt="user avatar" className="w-8 h-8" />
+          <button
+            onClick={handleSignOut}
+            className="text-lg m-2 hover:underline"
+          >
+            Sign Out
+          </button>
+          <Link href="./week7" className="block text-blue-500 hover:underline mb-2">
+          Link to Shopping List
+        </Link>
+        </div>
+      ) : (
+        <button onClick={handleSignIn} className="text-lg m-2 hover:underline">
+          Sign In
+        </button>
+      )}
+    </div>
+  );
+}
+
