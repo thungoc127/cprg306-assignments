@@ -10,6 +10,8 @@ export default function Page() {
   const [itemList, setItemList] = useState(
     itemData.map((item) => ({ ...item }))
   );
+  console.dir(itemList);
+
 
   const handleCreateItem = (item) => {
     setItemList([...itemList, item]);
